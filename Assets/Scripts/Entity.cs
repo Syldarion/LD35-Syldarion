@@ -9,12 +9,14 @@ public class Entity : MonoBehaviour
 
     public Image HealthBar;
 
+    public float MoveForce;
     public float Speed;
     public float BulletSpeed;
     public float FireCooldown;
     public float JumpForce;
     public float JumpCooldown;
     public bool IsGrounded;
+    public bool MovingRight;
 
     public Companion MyCompanion;
 
@@ -45,13 +47,21 @@ public class Entity : MonoBehaviour
             IsGrounded = true;
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.GetComponent<Projectile>())
         {
             Damage(other.GetComponent<Projectile>().Damage);
             Destroy(other.gameObject);
         }
+    }
+
+    protected void Flip()
+    {
+        MovingRight = !MovingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 
     public void Damage(int damage)

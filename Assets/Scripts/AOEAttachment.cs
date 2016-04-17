@@ -13,6 +13,16 @@ public class AOEAttachment : Attachment
         OnDisassembleEffect = "";
     }
 
+    public override void BuildAttachment()
+    {
+        if (Player.Instance.Parts < BuildCost)
+            return;
+
+        AOEAttachment new_attachment = new AOEAttachment();
+        Player.Instance.AddToInventory(new_attachment);
+        Player.Instance.Parts -= BuildCost;
+    }
+
     public override void Deconstruct()
     {
         base.Deconstruct();

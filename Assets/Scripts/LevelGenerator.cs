@@ -14,7 +14,6 @@ public class LevelGenerator : MonoBehaviour
     public GameObject ExitPointPrefab;
     public GameObject EnemyPrefab;
     public GameObject WorkshopPrefab;
-    public Attachment[] BaseAttachments;        //Attachment order: Gun, Sword, AOE, Heal, Shield, Thorns, Jump Jet, Booster, Gatherer
 
     //Level gen vars
     public float LevelWidth;
@@ -37,19 +36,6 @@ public class LevelGenerator : MonoBehaviour
 
         CurrentLevel = 1;
         platforms = new List<GameObject>();
-
-        BaseAttachments = new Attachment[9]
-        {
-            new GunAttachment(),
-            new SwordAttachment(),
-            new AOEAttachment(),
-            new HealAttachment(),
-            new ShieldAttachment(),
-            new ThornAttachment(),
-            new JumpJetAttachment(),
-            new BoosterAttachment(),
-            new GathererAttachment()
-        };
 
         GenerateLevel();
 	}
@@ -101,6 +87,12 @@ public class LevelGenerator : MonoBehaviour
         {
             Enemy new_enemy = Instantiate(EnemyPrefab).GetComponent<Enemy>();
             new_enemy.transform.position = platforms[Random.Range(0, platforms.Count)].transform.position + new Vector3(0.0f, 5.0f);
+        }
+
+        for(int i = 0; i < WorkshopCount; i++)
+        {
+            Workshop new_workshop = Instantiate(WorkshopPrefab).GetComponent<Workshop>();
+            new_workshop.transform.position = platforms[Random.Range(0, platforms.Count)].transform.position + new Vector3(0.0f, 0.75f);
         }
 
         Player.Instance.Spawn(SpawnPoint.transform.position);

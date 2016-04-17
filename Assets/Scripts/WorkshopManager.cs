@@ -2,10 +2,10 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class AttachmentManager : MonoBehaviour
+public class WorkshopManager : MonoBehaviour
 {
     [HideInInspector]
-    public static AttachmentManager Instance;
+    public static WorkshopManager Instance;
 
     public GameObject AttachmentReferencePanelPrefab;
 
@@ -16,65 +16,73 @@ public class AttachmentManager : MonoBehaviour
     public Image AttachmentClassImage;
     public Text AttachmentOnAttachText;
     public Text AttachmentOnDisassembleText;
-    
-    public AttachmentSlot[] Slots;
+
+    public RectTransform AttachmentContainer;
     public RectTransform InventoryContainer;
 
     public Sprite[] ClassSprites; //0 - attack, 1 - defense, 2 - utility, 3 - none
 
+    public Attachment[] BaseAttachments; //Attachment order: Gun, Sword, AOE, Heal, Shield, Thorns, Jump Jet, Booster, Gatherer
+
     public bool is_open;
 
-    void Start()
+	void Start()
 	{
         Instance = this;
 
         is_open = false;
-	}
+
+        BaseAttachments = new Attachment[9]
+        {
+            new GunAttachment(),
+            new SwordAttachment(),
+            new AOEAttachment(),
+            new HealAttachment(),
+            new ShieldAttachment(),
+            new ThornAttachment(),
+            new JumpJetAttachment(),
+            new BoosterAttachment(),
+            new GathererAttachment()
+        };
+
+        foreach (Attachment attachment in BaseAttachments)
+        {
+            AttachmentReferencePanel new_panel = Instantiate(AttachmentReferencePanelPrefab).GetComponent<AttachmentReferencePanel>();
+            new_panel.transform.SetParent(AttachmentContainer, false);
+            new_panel.Initialize(attachment);
+        }
+    }
 	
 	void Update()
 	{
-        if (Input.GetKeyDown(KeyCode.O) && !is_open && !PanelUtilities.PanelOpen)
-            OpenAttachmentManager();
-        else if (Input.GetKeyDown(KeyCode.Escape) && is_open)
-            CloseAttachmentManager();
-	}
+        if (Input.GetKeyDown(KeyCode.E) && Player.Instance.AtWorkshop && !is_open && !PanelUtilities.PanelOpen)
+            OpenWorkshop();
+        if (Input.GetKeyDown(KeyCode.Escape) && is_open)
+            CloseWorkshop();
+    }
 
-    public void OpenAttachmentManager()
+    public void OpenWorkshop()
     {
         is_open = true;
 
-        foreach(Attachment attachment in Player.Instance.Inventory)
+        foreach (Attachment attachment in Player.Instance.Inventory)
         {
             AttachmentReferencePanel new_panel = Instantiate(AttachmentReferencePanelPrefab).GetComponent<AttachmentReferencePanel>();
             new_panel.transform.SetParent(InventoryContainer, false);
             new_panel.Initialize(attachment);
         }
 
-        for (int i = 0; i < 3; i++)
-            if (Player.Instance.MyCompanion.Attachments[i] != null)
-            {
-                AttachmentReferencePanel new_panel = Instantiate(AttachmentReferencePanelPrefab).GetComponent<AttachmentReferencePanel>();
-                new_panel.transform.SetParent(Slots[i].transform, false);
-                new_panel.Initialize(Player.Instance.MyCompanion.Attachments[i]);
-                new_panel.GetComponent<CanvasGroup>().alpha = 0;
-                new_panel.GetComponent<CanvasGroup>().blocksRaycasts = false;
-            }
-
         LoadAttachment(new Attachment());
 
         PanelUtilities.ActivatePanel(GetComponent<CanvasGroup>());
     }
 
-    public void CloseAttachmentManager()
+    public void CloseWorkshop()
     {
         is_open = false;
 
         foreach (Transform child in InventoryContainer.transform)
             Destroy(child.gameObject);
-
-        for (int i = 0; i < 3; i++)
-            if (Slots[i].transform.childCount > 0)
-                Destroy(Slots[i].transform.GetChild(0).gameObject);
 
         PanelUtilities.DeactivatePanel(GetComponent<CanvasGroup>());
     }
@@ -85,8 +93,8 @@ public class AttachmentManager : MonoBehaviour
 
         AttachmentNameText.text = CurrentlyLoadedAttachment.AttachmentName;
         AttachmentCostText.text = CurrentlyLoadedAttachment.BuildCost.ToString();
-        
-        switch(CurrentlyLoadedAttachment.Class)
+
+        switch (CurrentlyLoadedAttachment.Class)
         {
             case Attachment.AttachmentClass.Attack:
                 AttachmentClassImage.sprite = ClassSprites[0];
@@ -107,22 +115,19 @@ public class AttachmentManager : MonoBehaviour
         AttachmentOnDisassembleText.text = string.Format("On Disassemble:\n{0}", CurrentlyLoadedAttachment.OnDisassembleEffect);
     }
 
-    public void AttachAttachment(Attachment attachment, int slot)
+    public void BuildAttachment()
     {
-        Player.Instance.Inventory.Remove(attachment);
-        Player.Instance.MyCompanion.Attachments[slot] = attachment;
+        if (Player.Instance.Inventory.Contains(CurrentlyLoadedAttachment))
+            return;
+
+        CurrentlyLoadedAttachment.BuildAttachment();
+
+        Player.Instance.PartCountText.text = Player.Instance.Parts.ToString();
     }
 
-    public void DetachAttachment(Attachment attachment)
+    public void DisassembleAttachment()
     {
-        for (int i = 0; i < 3; i++)
-        {
-            if(Player.Instance.MyCompanion.Attachments[i] == attachment)
-            {
-                Player.Instance.AddToInventory(attachment);
-                Player.Instance.MyCompanion.Attachments[i] = null;
-                return;
-            }
-        }
+        if (!Player.Instance.Inventory.Contains(CurrentlyLoadedAttachment))
+            return;
     }
 }

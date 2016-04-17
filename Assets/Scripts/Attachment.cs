@@ -30,14 +30,9 @@ public class Attachment
         IsAttached = false;
     }
 
-    public void BuildAttachment()
+    public virtual void BuildAttachment()
     {
-        if (Player.Instance.Parts < BuildCost)
-            return;
-
-        Attachment new_attachment = new Attachment();
-        Player.Instance.AddToInventory(new_attachment);
-        Player.Instance.Parts -= BuildCost;
+        
     }
 
     public virtual void Deconstruct()

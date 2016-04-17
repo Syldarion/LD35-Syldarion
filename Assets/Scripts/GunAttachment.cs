@@ -13,6 +13,16 @@ public class GunAttachment : Attachment
         OnDisassembleEffect = "";
     }
 
+    public override void BuildAttachment()
+    {
+        if (Player.Instance.Parts < BuildCost)
+            return;
+
+        GunAttachment new_attachment = new GunAttachment();
+        Player.Instance.AddToInventory(new_attachment);
+        Player.Instance.Parts -= BuildCost;
+    }
+
     public override void Deconstruct()
     {
         Player.Instance.DamageModifier++;

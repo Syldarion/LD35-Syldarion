@@ -25,6 +25,9 @@ public class AttachmentReferencePanel : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        AttachmentManager.Instance.LoadAttachment(ReferenceAttachment);
+        if (AttachmentManager.Instance.is_open)
+            AttachmentManager.Instance.LoadAttachment(ReferenceAttachment);
+        else if (WorkshopManager.Instance.is_open)
+            WorkshopManager.Instance.LoadAttachment(ReferenceAttachment);
     }
 }
