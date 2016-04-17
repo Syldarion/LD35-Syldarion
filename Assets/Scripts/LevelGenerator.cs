@@ -118,10 +118,11 @@ public class LevelGenerator : MonoBehaviour
             do
             {
                 plat_index = Random.Range(1, platforms.Count);
-                new_workshop.transform.position = platforms[Random.Range(0, platforms.Count)].transform.position + new Vector3(0.0f, 1.5f);
+                new_workshop.transform.position = platforms[plat_index].transform.position + new Vector3(0.0f, 1.5f);
             }
             while (occupied_platform_indices.Contains(plat_index));
 
+            platforms[plat_index].GetComponent<Platform>().CanMove = false;
             occupied_platform_indices.Add(plat_index);
         }
 
@@ -140,6 +141,8 @@ public class LevelGenerator : MonoBehaviour
         GameObject new_platform = Instantiate(PlatformPrefab);
         new_platform.transform.position = position;
         new_platform.transform.localScale = new Vector3(length, 1.0f);
+
+        new_platform.GetComponent<Platform>().Initialize();
 
         platforms.Add(new_platform);
     }

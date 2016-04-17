@@ -30,6 +30,9 @@ public class Player : Entity
 
         MovingRight = true;
 
+        CanDoubleJump = false;
+        HasDoubleJumped = false;
+
         my_rb = GetComponent<Rigidbody2D>();
 	}
 
@@ -93,8 +96,11 @@ public class Player : Entity
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.name == "Platform(Clone)")
+        {
             IsGrounded = true;
-        else if(other.collider.GetComponent<PartDrop>())
+            HasDoubleJumped = false;
+        }
+        else if (other.collider.GetComponent<PartDrop>())
         {
             AddParts(other.collider.GetComponent<PartDrop>().Parts);
             Destroy(other.gameObject);
@@ -135,8 +141,20 @@ public class Player : Entity
 
     public void AddParts(int parts)
     {
+        StartCoroutine(IncreasePartCount(Parts, Parts + parts));
+
         Parts += parts;
-        PartCountText.text = Parts.ToString();
+    }
+
+    IEnumerator IncreasePartCount(int start_count, int new_part_count)
+    {
+        int current = start_count;
+        while (current < new_part_count)
+        {
+            current++;
+            PartCountText.text = current.ToString();
+            yield return null;
+        }
     }
 
     public override IEnumerator AttackPowerup()

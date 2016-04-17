@@ -16,15 +16,12 @@ public class Companion : MonoBehaviour
 
     public Attachment[] Attachments;
 
-    public bool PowerActivated;
-
     public bool Idle;
 
 	void Start()
 	{
         Type = CompanionType.Other;
         Attachments = new Attachment[3];
-        PowerActivated = false;
         Idle = true;
 
         StartCoroutine(RunFunctions());
@@ -76,8 +73,6 @@ public class Companion : MonoBehaviour
             default:
                 return;
         }
-
-        PowerActivated = true;
     }
 
     public void UpdateType()
@@ -98,8 +93,7 @@ public class Companion : MonoBehaviour
         if (attachment_type_sum == 3 || attachment_type_sum == 6 || attachment_type_sum == 12)
         {
             Type = (CompanionType)attachment_type_sum;
-            if (!PowerActivated)
-                ActivatePowerup();
+            ActivatePowerup();
         }
         else
             Type = CompanionType.Other;

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -17,6 +18,7 @@ public class Entity : MonoBehaviour
     public float JumpCooldown;
     public bool CanSprint;
     public bool CanDoubleJump;
+    public bool HasDoubleJumped;
     public bool IsGrounded;
     public bool MovingRight;
     public bool DoubleDrops;
@@ -100,25 +102,30 @@ public class Entity : MonoBehaviour
         }
 
         if (GetComponent<Enemy>())
+        {
             LevelGenerator.Instance.Enemies.Remove(GetComponent<Enemy>());
-
-        else if (GetComponent<Player>())
-        { //Switch to main menu
+            Destroy(gameObject);
         }
-
-        Destroy(gameObject);
+        else if (GetComponent<Player>())
+        {
+            SceneManager.LoadScene("menu");
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("menu"));
+        }
     }
 
     protected void Jump()
     {
-        if (!IsGrounded || JumpTimer > 0.0f)
-            return;
+        if ((IsGrounded && JumpTimer < 0.0f) || (CanDoubleJump && !HasDoubleJumped))
+        {
+            JumpTimer = JumpCooldown;
 
-        JumpTimer = JumpCooldown;
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0.0f, JumpForce), ForceMode2D.Impulse);
 
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(0.0f, JumpForce), ForceMode2D.Impulse);
+            if (!IsGrounded && !HasDoubleJumped)
+                HasDoubleJumped = true;
 
-        IsGrounded = false;
+            IsGrounded = false;
+        }
     }
 
     public void Fire(Vector3 target)
