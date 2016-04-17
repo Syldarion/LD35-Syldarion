@@ -11,7 +11,7 @@ public class ShieldAttachment : Attachment
         IsAttached = false;
         OnAttachEffect = "\tAllows your robot to deflect shots from behind";
         OnDisassembleEffect = "\tGrants a permanent +1 armor boost";
-
+        Level = 1;
         OneTimeActivated = false;
     }
 
@@ -43,7 +43,18 @@ public class ShieldAttachment : Attachment
         BoxCollider2D back_shield = AttachedTo.gameObject.AddComponent<BoxCollider2D>();
         back_shield.offset = new Vector2(0.0f, -2.0f);
         back_shield.size = new Vector2(1.0f, 5.0f);
+        back_shield.isTrigger = true;
 
         base.ExecuteFunction();
+    }
+
+    public override void LevelUp()
+    {
+        if (Player.Instance.Parts < BuildCost && Level < 1)
+            return;
+
+
+
+        base.LevelUp();
     }
 }
