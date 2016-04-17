@@ -49,7 +49,7 @@ public class ThornAttachment : Attachment
 
     public override void LevelUp()
     {
-        if (Player.Instance.Parts < BuildCost && Level < 3)
+        if (Player.Instance.Parts < BuildCost || Level >= 3)
             return;
 
         PushbackRadius += 2.0f;

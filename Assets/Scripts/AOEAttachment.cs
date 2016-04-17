@@ -47,7 +47,7 @@ public class AOEAttachment : Attachment
 
     public override void LevelUp()
     {
-        if (Player.Instance.Parts < BuildCost && Level < 3)
+        if (Player.Instance.Parts < BuildCost || Level >= 3)
             return;
 
         AttackDamage += 2;

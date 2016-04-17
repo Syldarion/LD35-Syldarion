@@ -50,7 +50,7 @@ public class ShieldAttachment : Attachment
 
     public override void LevelUp()
     {
-        if (Player.Instance.Parts < BuildCost && Level < 1)
+        if (Player.Instance.Parts < BuildCost || Level >= 1)
             return;
 
 

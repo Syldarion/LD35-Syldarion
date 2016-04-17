@@ -128,10 +128,11 @@ public class Entity : MonoBehaviour
 
         FireTimer = FireCooldown;
 
-        Vector3 diff_vec = Vector3.Normalize((target - transform.position));
+        Vector2 diff_vec = (target - transform.position);
+        diff_vec.Normalize();
 
         GameObject new_projectile = Instantiate(ProjectilePrefab);
-        new_projectile.transform.position = transform.position + diff_vec * 1.5f;
+        new_projectile.transform.position = transform.position + (Vector3)diff_vec;
         new_projectile.GetComponent<Rigidbody2D>().AddForce(diff_vec * BulletSpeed, ForceMode2D.Impulse);
         new_projectile.GetComponent<Projectile>().Damage = 10 + DamageModifier;
 

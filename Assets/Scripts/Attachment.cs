@@ -55,6 +55,7 @@ public class Attachment
 
     public virtual void LevelUp()
     {
+        Level++;
         Player.Instance.AddParts(-BuildCost);
     }
 }

@@ -146,7 +146,9 @@ public class WorkshopManager : MonoBehaviour
         if (!Player.Instance.Inventory.Contains(CurrentlyLoadedAttachment))
             return;
 
-        CurrentlyLoadedAttachment.LevelUp();
+        SelectedReferencePanel.ReferenceAttachment.LevelUp();
+
+        Debug.Log(SelectedReferencePanel.ReferenceAttachment.Level);
 
         SelectedReferencePanel.Initialize(CurrentlyLoadedAttachment);
 
