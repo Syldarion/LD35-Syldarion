@@ -3,6 +3,8 @@ using System.Collections;
 
 public class JumpJetAttachment : Attachment
 {
+
+
     public JumpJetAttachment()
     {
         Class = AttachmentClass.Utility;
@@ -11,6 +13,8 @@ public class JumpJetAttachment : Attachment
         IsAttached = false;
         OnAttachEffect = "\tAllow the player to double jump";
         OnDisassembleEffect = "\tGrants a permanent +2 to jumping power";
+
+        OneTimeActivated = false;
     }
 
     public override void BuildAttachment()
@@ -34,6 +38,11 @@ public class JumpJetAttachment : Attachment
 
     public override void ExecuteFunction()
     {
+        if (OneTimeActivated)
+            return;
+
         AttachedTo.Owner.CanDoubleJump = true;
+
+        base.ExecuteFunction();
     }
 }

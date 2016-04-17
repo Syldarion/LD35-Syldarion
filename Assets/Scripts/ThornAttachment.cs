@@ -15,6 +15,8 @@ public class ThornAttachment : Attachment
         OnAttachEffect = "\tPeriodically knocks enemies away from the player";
         OnDisassembleEffect = "\tGrants a permanent +1 damage reflection boost";
 
+        OneTimeActivated = false;
+
         PushbackRadius = 5.0f;
         PushbackForce = 5.0f;
     }
@@ -41,5 +43,7 @@ public class ThornAttachment : Attachment
         foreach(Enemy enemy in LevelGenerator.Instance.Enemies)
             if (Vector2.Distance(AttachedTo.Owner.transform.position, enemy.transform.position) <= PushbackRadius)
                 enemy.GetComponent<Rigidbody2D>().AddForce((enemy.transform.position - AttachedTo.Owner.transform.position).normalized * PushbackForce, ForceMode2D.Impulse);
+
+        base.ExecuteFunction();
     }
 }

@@ -11,6 +11,9 @@ public class Player : Entity
     public Text PartCountText;
     public List<Attachment> Inventory;
 
+    public Image PowerupBar;
+    public Text PowerupText;
+
     public float PartDropModifier;
 
     public bool AtWorkshop;
@@ -35,11 +38,30 @@ public class Player : Entity
         JumpTimer -= Time.deltaTime;
         FireTimer -= Time.deltaTime;
 
-        if (PanelUtilities.PanelOpen)
+        if (AttachmentManager.Instance.is_open || WorkshopManager.Instance.is_open)
             return;
 
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
+
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                StopAllCoroutines();
+                StartCoroutine(AttackPowerup());
+            }
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                StopAllCoroutines();
+                StartCoroutine(DefensePowerup());
+            }
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                StopAllCoroutines();
+                StartCoroutine(UtilityPowerup());
+            }
+        }
 
         if (Input.GetMouseButtonDown(0))
             Fire(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -49,7 +71,7 @@ public class Player : Entity
 
     void FixedUpdate()
     {
-        if (PanelUtilities.PanelOpen)
+        if (AttachmentManager.Instance.is_open || WorkshopManager.Instance.is_open)
             return;
 
         float horiz_move = Input.GetAxis("Horizontal");
@@ -83,6 +105,9 @@ public class Player : Entity
         }
         else if (other.GetComponent<Workshop>())
             AtWorkshop = true;
+
+        if (other.name == "KillingFloor")
+            Die();
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -94,9 +119,6 @@ public class Player : Entity
     public void Spawn(Vector3 position)
     {
         transform.position = position;
-
-        for (int i = 0; i < 5; i++)
-            AddToInventory(WorkshopManager.Instance.BaseAttachments[Random.Range(0, 9)]);
     }
 
     public void AddToInventory(Attachment attachment)
@@ -110,5 +132,96 @@ public class Player : Entity
     {
         Parts += parts;
         PartCountText.text = Parts.ToString();
+    }
+
+    public override IEnumerator AttackPowerup()
+    {
+        float powerup_timer = 10.0f;
+        float old_cooldown = FireCooldown;
+
+        DamageModifier += 20;
+        FireCooldown = 0.1f;
+
+        PowerupBar.color = Color.red;
+
+        while (powerup_timer > 0.0f)
+        {
+            PowerupBar.transform.localScale = new Vector3(powerup_timer / 10.0f, 1.0f);
+            PowerupText.text = string.Format("Attack Power: {0}s", powerup_timer.ToString("F"));
+
+            powerup_timer -= Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        DamageModifier -= 20;
+        FireCooldown = old_cooldown;
+
+        PowerupBar.color = Color.white;
+
+        PowerupBar.transform.localScale = new Vector3(1.0f, 1.0f);
+        PowerupText.text = "No Power";
+
+        DestroyCompanion();
+    }
+
+    public override IEnumerator DefensePowerup()
+    {
+        float powerup_timer = 10.0f;
+
+        Armor += 20;
+
+        PowerupBar.color = Color.green;
+
+        while (powerup_timer > 0.0f)
+        {
+            PowerupBar.transform.localScale = new Vector3(powerup_timer / 10.0f, 1.0f);
+            PowerupText.text = string.Format("Defense Power: {0}s", powerup_timer.ToString("F"));
+
+            powerup_timer -= Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        Armor -= 20;
+
+        PowerupBar.color = Color.white;
+
+        PowerupBar.transform.localScale = new Vector3(1.0f, 1.0f);
+        PowerupText.text = "No Power";
+
+        DestroyCompanion();
+    }
+
+    public override IEnumerator UtilityPowerup()
+    {
+        float powerup_timer = 10.0f;
+        float old_j_force = JumpForce;
+        float old_m_force = MoveForce;
+
+        JumpForce *= 2;
+        MoveForce *= 2;
+
+        PowerupBar.color = Color.blue;
+
+        while (powerup_timer > 0.0f)
+        {
+            PowerupBar.transform.localScale = new Vector3(powerup_timer / 10.0f, 1.0f);
+            PowerupText.text = string.Format("Utility Power: {0}s", powerup_timer.ToString("F"));
+
+            powerup_timer -= Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        JumpForce = old_j_force;
+        MoveForce = old_m_force;
+
+        PowerupBar.color = Color.white;
+
+        PowerupBar.transform.localScale = new Vector3(1.0f, 1.0f);
+        PowerupText.text = "No Power";
+
+        DestroyCompanion();
     }
 }

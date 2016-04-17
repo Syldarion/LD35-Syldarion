@@ -5,6 +5,8 @@ public class Attachment
 {
     public Companion AttachedTo;
 
+    public bool OneTimeActivated;
+
     public enum AttachmentClass
     {
         Attack = 1,
@@ -30,6 +32,7 @@ public class Attachment
         AttachmentName = "None";
         BuildCost = 0;
         IsAttached = false;
+        OneTimeActivated = false;
     }
 
     public virtual void BuildAttachment()
@@ -39,11 +42,13 @@ public class Attachment
 
     public virtual void Deconstruct()
     {
+        OneTimeActivated = false;
         Player.Instance.Inventory.Remove(this);
     }
 
     public virtual void ExecuteFunction()
     {
-
+        if (!OneTimeActivated)
+            OneTimeActivated = true;
     }
 }

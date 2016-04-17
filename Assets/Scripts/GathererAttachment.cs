@@ -11,6 +11,8 @@ public class GathererAttachment : Attachment
         IsAttached = false;
         OnAttachEffect = "\tEnemies have a chance to drop double parts";
         OnDisassembleEffect = "\tGrants a +10% boost to part gathering";
+
+        OneTimeActivated = false;
     }
 
     public override void BuildAttachment()
@@ -34,6 +36,11 @@ public class GathererAttachment : Attachment
 
     public override void ExecuteFunction()
     {
+        if (OneTimeActivated)
+            return;
+
         AttachedTo.Owner.DoubleDrops = true;
+
+        base.ExecuteFunction();
     }
 }

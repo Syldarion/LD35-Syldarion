@@ -14,6 +14,8 @@ public class HealAttachment : Attachment
         OnAttachEffect = "\tYour robot will periodically heal you";
         OnDisassembleEffect = "\tGrants a permanent +10 to health";
 
+        OneTimeActivated = false;
+
         HealAmount = 5;
     }
 
@@ -37,5 +39,7 @@ public class HealAttachment : Attachment
     public override void ExecuteFunction()
     {
         AttachedTo.Owner.Health = Mathf.Clamp(AttachedTo.Owner.Health + HealAmount, 0, AttachedTo.Owner.MaxHealth);
+
+        base.ExecuteFunction();
     }
 }

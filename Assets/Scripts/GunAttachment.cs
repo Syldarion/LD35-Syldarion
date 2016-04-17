@@ -15,6 +15,8 @@ public class GunAttachment : Attachment
         OnAttachEffect = "\tAllows your robot to shoot enemies";
         OnDisassembleEffect = "\tGrants a permanent +1 damage boost";
 
+        OneTimeActivated = false;
+
         AttackRadius = 20.0f;
         AttackDamage = 5;
     }
@@ -41,5 +43,7 @@ public class GunAttachment : Attachment
         foreach (Enemy enemy in LevelGenerator.Instance.Enemies)
             if (Vector2.Distance(AttachedTo.Owner.transform.position, enemy.transform.position) <= AttackRadius)
                 enemy.Damage(AttackDamage);
+
+        base.ExecuteFunction();
     }
 }

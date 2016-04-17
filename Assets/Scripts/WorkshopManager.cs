@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 
 public class WorkshopManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class WorkshopManager : MonoBehaviour
 
     public GameObject AttachmentReferencePanelPrefab;
 
+    public AttachmentReferencePanel SelectedReferencePanel;
     public Attachment CurrentlyLoadedAttachment;
 
     public Text AttachmentNameText;
@@ -123,11 +125,25 @@ public class WorkshopManager : MonoBehaviour
         CurrentlyLoadedAttachment.BuildAttachment();
 
         Player.Instance.PartCountText.text = Player.Instance.Parts.ToString();
+
+        AttachmentReferencePanel new_panel = Instantiate(AttachmentReferencePanelPrefab).GetComponent<AttachmentReferencePanel>();
+        new_panel.transform.SetParent(InventoryContainer, false);
+        new_panel.Initialize(Player.Instance.Inventory[Player.Instance.Inventory.Count - 1]);
     }
 
     public void DisassembleAttachment()
     {
         if (!Player.Instance.Inventory.Contains(CurrentlyLoadedAttachment))
             return;
+
+        Destroy(SelectedReferencePanel.gameObject);
+
+        CurrentlyLoadedAttachment.Deconstruct();
+    }
+
+    public void OnIconHover()
+    {
+        Tooltip.Instance.EnableTooltip(true);
+        Tooltip.Instance.UpdateTooltip(Enum.GetName(typeof(Attachment.AttachmentClass), CurrentlyLoadedAttachment.Class));
     }
 }

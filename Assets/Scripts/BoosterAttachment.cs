@@ -11,6 +11,8 @@ public class BoosterAttachment : Attachment
         IsAttached = false;
         OnAttachEffect = "\tAllows the player to have a large temporary speed boost";
         OnDisassembleEffect = "\tGrants a permanent +1 movement speed boost";
+
+        OneTimeActivated = false;
     }
 
     public override void BuildAttachment()
@@ -32,6 +34,11 @@ public class BoosterAttachment : Attachment
 
     public override void ExecuteFunction()
     {
-        AttachedTo.Owner.Speed *= 2;
+        if (OneTimeActivated)
+            return;
+
+        //activate bool to allow sprinting
+
+        base.ExecuteFunction();
     }
 }

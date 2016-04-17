@@ -57,6 +57,9 @@ public class Entity : MonoBehaviour
             Damage(other.GetComponent<Projectile>().Damage);
             Destroy(other.gameObject);
         }
+
+        if (other.name == "KillingFloor")
+            Die();
     }
 
     protected void Flip()
@@ -93,6 +96,10 @@ public class Entity : MonoBehaviour
         if (GetComponent<Enemy>())
             LevelGenerator.Instance.Enemies.Remove(GetComponent<Enemy>());
 
+        else if (GetComponent<Player>())
+        { //Switch to main menu
+        }
+
         Destroy(gameObject);
     }
 
@@ -115,7 +122,7 @@ public class Entity : MonoBehaviour
 
         FireTimer = FireCooldown;
 
-        Vector3 diff_vec = (target - transform.position).normalized;
+        Vector3 diff_vec = Vector3.Normalize((target - transform.position));
 
         GameObject new_projectile = Instantiate(ProjectilePrefab);
         new_projectile.transform.position = transform.position + diff_vec * 1.5f;
@@ -123,5 +130,72 @@ public class Entity : MonoBehaviour
         new_projectile.GetComponent<Projectile>().Damage = 10 + DamageModifier;
 
         GetComponent<AudioSource>().Play();
+    }
+
+    public void DestroyCompanion()
+    {
+        for (int i = 0; i < 3; i++)
+            MyCompanion.Attachments[i] = null;
+    }
+
+    public virtual IEnumerator AttackPowerup()
+    {
+        float powerup_timer = 10.0f;
+        float old_cooldown = FireCooldown;
+
+        DamageModifier += 20;
+        FireCooldown = 0.1f;
+
+        while(powerup_timer > 0.0f)
+        {
+            powerup_timer -= Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        DamageModifier -= 20;
+        FireCooldown = old_cooldown;
+
+        DestroyCompanion();
+    }
+
+    public virtual IEnumerator DefensePowerup()
+    {
+        float powerup_timer = 10.0f;
+
+        Armor += 20;
+
+        while (powerup_timer > 0.0f)
+        {
+            powerup_timer -= Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        Armor -= 20;
+
+        DestroyCompanion();
+    }
+
+    public virtual IEnumerator UtilityPowerup()
+    {
+        float powerup_timer = 10.0f;
+        float old_j_force = JumpForce;
+        float old_m_force = MoveForce;
+
+        JumpForce *= 3;
+        MoveForce *= 2;
+
+        while (powerup_timer > 0.0f)
+        {
+            powerup_timer -= Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        JumpForce = old_j_force;
+        MoveForce = old_m_force;
+
+        DestroyCompanion();
     }
 }

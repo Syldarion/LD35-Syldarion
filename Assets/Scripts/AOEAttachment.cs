@@ -14,6 +14,8 @@ public class AOEAttachment : Attachment
         OnAttachEffect = "\tDeals damage to all enemies in a 10 unit radius";
         OnDisassembleEffect = "\tGrants a permanent +1 damage boost";
 
+        OneTimeActivated = false;
+
         AttackDamage = 10;
     }
 
@@ -39,5 +41,7 @@ public class AOEAttachment : Attachment
         foreach (Enemy enemy in LevelGenerator.Instance.Enemies)
             if (Vector2.Distance(AttachedTo.Owner.transform.position, enemy.transform.position) <= 10.0f)
                 enemy.Damage(AttackDamage);
+
+        base.ExecuteFunction();
     }
 }

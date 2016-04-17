@@ -15,6 +15,8 @@ public class SwordAttachment : Attachment
         OnAttachEffect = "\tAllows your robot to attack enemies with a sword";
         OnDisassembleEffect = "\tGrants a permanent +1 damage boost";
 
+        OneTimeActivated = false;
+
         AttackRadius = 2.0f;
         AttackDamage = 15;
     }
@@ -41,5 +43,7 @@ public class SwordAttachment : Attachment
         foreach (Enemy enemy in LevelGenerator.Instance.Enemies)
             if (Vector2.Distance(AttachedTo.Owner.transform.position, enemy.transform.position) <= AttackRadius)
                 enemy.Damage(AttackDamage);
+
+        base.ExecuteFunction();
     }
 }

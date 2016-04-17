@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 
 public class AttachmentManager : MonoBehaviour
@@ -110,7 +111,7 @@ public class AttachmentManager : MonoBehaviour
     public void AttachAttachment(Attachment attachment, int slot)
     {
         Player.Instance.Inventory.Remove(attachment);
-        Player.Instance.MyCompanion.Attachments[slot] = attachment;
+        Player.Instance.MyCompanion.AddAttachment(attachment, slot);
     }
 
     public void DetachAttachment(Attachment attachment)
@@ -121,8 +122,15 @@ public class AttachmentManager : MonoBehaviour
             {
                 Player.Instance.AddToInventory(attachment);
                 Player.Instance.MyCompanion.Attachments[i] = null;
+                attachment.OneTimeActivated = false;
                 return;
             }
         }
+    }
+
+    public void OnIconHover()
+    {
+        Tooltip.Instance.EnableTooltip(true);
+        Tooltip.Instance.UpdateTooltip(Enum.GetName(typeof(Attachment.AttachmentClass), CurrentlyLoadedAttachment.Class));
     }
 }

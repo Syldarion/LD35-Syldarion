@@ -26,6 +26,8 @@ public class Companion : MonoBehaviour
         Attachments = new Attachment[3];
         PowerActivated = false;
         Idle = true;
+
+        StartCoroutine(RunFunctions());
 	}
 	
 	void Update()
@@ -59,10 +61,16 @@ public class Companion : MonoBehaviour
         switch (Type)
         {
             case CompanionType.Attack:
+                Owner.StopAllCoroutines();
+                Owner.StartCoroutine(Owner.AttackPowerup());
                 break;
             case CompanionType.Defense:
+                Owner.StopAllCoroutines();
+                Owner.StartCoroutine(Owner.DefensePowerup());
                 break;
             case CompanionType.Utility:
+                Owner.StopAllCoroutines();
+                Owner.StartCoroutine(Owner.UtilityPowerup());
                 break;
             case CompanionType.Other:
             default:
@@ -108,6 +116,18 @@ public class Companion : MonoBehaviour
         {
             Tooltip.Instance.EnableTooltip(true);
             Tooltip.Instance.UpdateTooltip("No attachment");
+        }
+    }
+
+    IEnumerator RunFunctions()
+    {
+        while(true)
+        {
+            for (int i = 0; i < 3; i++)
+                if (Attachments[i] != null)
+                    Attachments[i].ExecuteFunction();
+
+            yield return new WaitForSeconds(1.0f);
         }
     }
 }

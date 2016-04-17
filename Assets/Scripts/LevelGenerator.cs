@@ -32,6 +32,8 @@ public class LevelGenerator : MonoBehaviour
 
     List<GameObject> platforms;
 
+    List<int> occupied_platform_indices;
+
 	void Start()
 	{
         Instance = this;
@@ -40,6 +42,7 @@ public class LevelGenerator : MonoBehaviour
 
         Enemies = new List<Enemy>();
         platforms = new List<GameObject>();
+        occupied_platform_indices = new List<int>();
 
         GenerateLevel();
 	}
@@ -87,17 +90,34 @@ public class LevelGenerator : MonoBehaviour
         //platforms[0] should be the first spawned platform at (0,0)
         SpawnPoint.transform.position = platforms[0].transform.position + new Vector3(0.0f, 5.0f);
 
+        int plat_index;
+
         for(int i = 0; i < EnemyCount; i++)
         {
             Enemy new_enemy = Instantiate(EnemyPrefab).GetComponent<Enemy>();
-            new_enemy.transform.position = platforms[Random.Range(0, platforms.Count)].transform.position + new Vector3(0.0f, 5.0f);
+            do
+            {
+                plat_index = Random.Range(1, platforms.Count);
+                new_enemy.transform.position = platforms[plat_index].transform.position + new Vector3(0.0f, 5.0f);
+            }
+            while (occupied_platform_indices.Contains(plat_index));
+
+            occupied_platform_indices.Add(plat_index);
+
             Enemies.Add(new_enemy);
         }
 
         for(int i = 0; i < WorkshopCount; i++)
         {
             Workshop new_workshop = Instantiate(WorkshopPrefab).GetComponent<Workshop>();
-            new_workshop.transform.position = platforms[Random.Range(0, platforms.Count)].transform.position + new Vector3(0.0f, 0.75f);
+            do
+            {
+                plat_index = Random.Range(1, platforms.Count);
+                new_workshop.transform.position = platforms[Random.Range(0, platforms.Count)].transform.position + new Vector3(0.0f, 1.5f);
+            }
+            while (occupied_platform_indices.Contains(plat_index));
+
+            occupied_platform_indices.Add(plat_index);
         }
 
         Player.Instance.Spawn(SpawnPoint.transform.position);
