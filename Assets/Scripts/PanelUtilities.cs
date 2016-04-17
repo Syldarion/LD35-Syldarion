@@ -3,9 +3,11 @@ using System.Collections;
 
 public class PanelUtilities : MonoBehaviour
 {
+    public static bool PanelOpen;
+
 	void Start()
     {
-
+        PanelOpen = false;
 	}
 	
 	void Update()
@@ -22,6 +24,8 @@ public class PanelUtilities : MonoBehaviour
         panel.alpha = 1;
         panel.interactable = true;
         panel.blocksRaycasts = true;
+
+        PanelOpen = true;
     }
 
     /// <summary>
@@ -33,6 +37,8 @@ public class PanelUtilities : MonoBehaviour
         panel.alpha = 0;
         panel.interactable = false;
         panel.blocksRaycasts = false;
+
+        PanelOpen = false;
     }
 
     /// <summary>
@@ -42,6 +48,8 @@ public class PanelUtilities : MonoBehaviour
     public static void RevealPanel(CanvasGroup panel)
     {
         panel.alpha = 1;
+
+        PanelOpen = true;
     }
 
     /// <summary>
@@ -51,5 +59,7 @@ public class PanelUtilities : MonoBehaviour
     public static void HidePanel(CanvasGroup panel)
     {
         panel.alpha = 0;
+
+        PanelOpen = false;
     }
 }

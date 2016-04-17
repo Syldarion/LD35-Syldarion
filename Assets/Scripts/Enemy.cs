@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Entity
 {
-	void Start()
+    void Start()
 	{
-		
-	}
+        Parts = Random.Range(10, 100);
+    }
 	
 	void Update()
 	{
-		
-	}
+        JumpTimer -= Time.deltaTime;
+        FireTimer -= Time.deltaTime;
+    }
 }

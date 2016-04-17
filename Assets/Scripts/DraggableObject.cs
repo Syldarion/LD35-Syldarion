@@ -26,7 +26,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         StartPosition = transform.position;
         StartParent = transform.parent;
 
-        transform.SetParent(GameObject.Find("Canvas").transform);
+        transform.SetParent(GameObject.Find("MainCanvas").transform);
 
         GetComponent<CanvasGroup>().alpha = 1;
         GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -44,7 +44,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         DragObject = null;
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-        if (transform.parent == StartParent || transform.parent == GameObject.Find("Canvas").transform)
+        if (transform.parent == StartParent || transform.parent == GameObject.Find("MainCanvas").transform)
         {
             transform.SetParent(StartParent, false);
             transform.localPosition = Vector2.zero;

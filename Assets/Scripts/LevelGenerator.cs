@@ -26,6 +26,7 @@ public class LevelGenerator : MonoBehaviour
     public float MaxPlatformWidth;
     public float MaxPlatformOverlap;
     public int PathCount;
+    public int EnemyCount;
     public int WorkshopCount;
 
     List<GameObject> platforms;
@@ -95,6 +96,12 @@ public class LevelGenerator : MonoBehaviour
 
         //platforms[0] should be the first spawned platform at (0,0)
         SpawnPoint.transform.position = platforms[0].transform.position + new Vector3(0.0f, 5.0f);
+
+        for(int i = 0; i < EnemyCount; i++)
+        {
+            Enemy new_enemy = Instantiate(EnemyPrefab).GetComponent<Enemy>();
+            new_enemy.transform.position = platforms[Random.Range(0, platforms.Count)].transform.position + new Vector3(0.0f, 5.0f);
+        }
 
         Player.Instance.Spawn(SpawnPoint.transform.position);
     }

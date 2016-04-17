@@ -73,7 +73,8 @@ public class AttachmentManager : MonoBehaviour
             Destroy(child.gameObject);
 
         for (int i = 0; i < 3; i++)
-            Destroy(Slots[i].transform.GetChild(0).gameObject);
+            if (Slots[i].transform.childCount > 0)
+                Destroy(Slots[i].transform.GetChild(0).gameObject);
 
         PanelUtilities.DeactivatePanel(GetComponent<CanvasGroup>());
     }
