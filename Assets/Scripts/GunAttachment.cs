@@ -3,15 +3,15 @@ using System.Collections;
 
 public class GunAttachment : Attachment
 {
-	void Start()
-	{
+    public GunAttachment()
+    {
         Class = AttachmentClass.Attack;
-	}
-	
-	void Update()
-	{
-		
-	}
+        AttachmentName = "Gun";
+        BuildCost = 1000;
+        IsAttached = false;
+        OnAttachEffect = "";
+        OnDisassembleEffect = "";
+    }
 
     public override void Deconstruct()
     {

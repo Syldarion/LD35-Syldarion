@@ -3,15 +3,15 @@ using System.Collections;
 
 public class JumpJetAttachment : Attachment
 {
-	void Start()
-	{
+    public JumpJetAttachment()
+    {
         Class = AttachmentClass.Utility;
-	}
-	
-	void Update()
-	{
-		
-	}
+        AttachmentName = "Jump Jet";
+        BuildCost = 1000;
+        IsAttached = false;
+        OnAttachEffect = "";
+        OnDisassembleEffect = "";
+    }
 
     public override void Deconstruct()
     {

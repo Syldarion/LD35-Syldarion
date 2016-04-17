@@ -3,15 +3,15 @@ using System.Collections;
 
 public class ThornAttachment : Attachment
 {
-	void Start()
-	{
+    public ThornAttachment()
+    {
         Class = AttachmentClass.Defense;
-	}
-	
-	void Update()
-	{
-		
-	}
+        AttachmentName = "Thorns";
+        BuildCost = 1000;
+        IsAttached = false;
+        OnAttachEffect = "";
+        OnDisassembleEffect = "";
+    }
 
     public override void Deconstruct()
     {

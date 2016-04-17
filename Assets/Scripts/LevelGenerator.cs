@@ -12,6 +12,8 @@ public class LevelGenerator : MonoBehaviour
     public GameObject PlatformPrefab;
     public GameObject SpawnPoint;
     public GameObject ExitPointPrefab;
+    public GameObject EnemyPrefab;
+    public GameObject WorkshopPrefab;
     public Attachment[] BaseAttachments;        //Attachment order: Gun, Sword, AOE, Heal, Shield, Thorns, Jump Jet, Booster, Gatherer
 
     //Level gen vars
@@ -24,6 +26,7 @@ public class LevelGenerator : MonoBehaviour
     public float MaxPlatformWidth;
     public float MaxPlatformOverlap;
     public int PathCount;
+    public int WorkshopCount;
 
     List<GameObject> platforms;
 
@@ -36,15 +39,15 @@ public class LevelGenerator : MonoBehaviour
 
         BaseAttachments = new Attachment[9]
         {
-            new Attachment(Attachment.AttachmentClass.Attack, "Gun", 1000),
-            new Attachment(Attachment.AttachmentClass.Attack, "Sword", 1000),
-            new Attachment(Attachment.AttachmentClass.Attack, "AOE", 1000),
-            new Attachment(Attachment.AttachmentClass.Defense, "Heal", 1000),
-            new Attachment(Attachment.AttachmentClass.Defense, "Shield", 1000),
-            new Attachment(Attachment.AttachmentClass.Defense, "Thorns", 1000),
-            new Attachment(Attachment.AttachmentClass.Utility, "Jump Jet", 1000),
-            new Attachment(Attachment.AttachmentClass.Utility, "Booster", 1000),
-            new Attachment(Attachment.AttachmentClass.Utility, "Gatherer", 1000)
+            new GunAttachment(),
+            new SwordAttachment(),
+            new AOEAttachment(),
+            new HealAttachment(),
+            new ShieldAttachment(),
+            new ThornAttachment(),
+            new JumpJetAttachment(),
+            new BoosterAttachment(),
+            new GathererAttachment()
         };
 
         GenerateLevel();
@@ -60,11 +63,10 @@ public class LevelGenerator : MonoBehaviour
         //Create first platform
         CreatePlatform(Vector2.zero, 10.0f);
 
-        float path_section_size = LevelHeight / PathCount;   
+        float path_width = LevelHeight / PathCount;                     //Total width for each path to create platforms in
 
         for (int p = 0; p < PathCount; p++)
         {
-            float path_width = LevelHeight / PathCount;                 //Total width for each path to create platforms in
             float path_center = -(path_width * (p - PathCount / 2));    //Y-value for center of path
             float furthest_right = 5.0f;                                //X-value of right side of furthest out platform
             float last_y = 0.0f;                                        //Y-value of last created platform

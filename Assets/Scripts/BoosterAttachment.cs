@@ -3,15 +3,15 @@ using System.Collections;
 
 public class BoosterAttachment : Attachment
 {
-	void Start()
-	{
+    public BoosterAttachment()
+    {
         Class = AttachmentClass.Utility;
-	}
-	
-	void Update()
-	{
-		
-	}
+        AttachmentName = "Booster";
+        BuildCost = 1000;
+        IsAttached = false;
+        OnAttachEffect = "";
+        OnDisassembleEffect = "";
+    }
 
     public override void Deconstruct()
     {

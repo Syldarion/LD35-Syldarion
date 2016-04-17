@@ -3,15 +3,15 @@ using System.Collections;
 
 public class GathererAttachment : Attachment
 {
-	void Start()
-	{
+    public GathererAttachment()
+    {
         Class = AttachmentClass.Utility;
-	}
-	
-	void Update()
-	{
-		
-	}
+        AttachmentName = "Gatherer";
+        BuildCost = 1000;
+        IsAttached = false;
+        OnAttachEffect = "";
+        OnDisassembleEffect = "";
+    }
 
     public override void Deconstruct()
     {

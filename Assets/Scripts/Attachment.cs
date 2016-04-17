@@ -7,30 +7,27 @@ public class Attachment
     {
         Attack = 1,
         Defense = 2,
-        Utility = 4
+        Utility = 4,
+        None = 8
     }
     public AttachmentClass Class;
 
     public string AttachmentName;
     public int BuildCost;
-    
+
+    public bool IsAttached;
+
+    public string OnAttachEffect;
+    public string OnDisassembleEffect;
+
+    public int Level;
+
     public Attachment()
     {
-
-    }
-
-    public Attachment(AttachmentClass a_class, string name, int cost)
-    {
-        Class = a_class;
-        AttachmentName = name;
-        BuildCost = cost;
-    }
-
-    public Attachment(Attachment copy)
-    {
-        Class = copy.Class;
-        AttachmentName = copy.AttachmentName;
-        BuildCost = copy.BuildCost;
+        Class = AttachmentClass.None;
+        AttachmentName = "None";
+        BuildCost = 0;
+        IsAttached = false;
     }
 
     public void BuildAttachment()

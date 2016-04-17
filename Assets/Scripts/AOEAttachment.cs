@@ -3,15 +3,15 @@ using System.Collections;
 
 public class AOEAttachment : Attachment
 {
-	void Start()
-	{
+    public AOEAttachment()
+    {
         Class = AttachmentClass.Attack;
-	}
-	
-	void Update()
-	{
-		
-	}
+        AttachmentName = "AOE";
+        BuildCost = 1000;
+        IsAttached = false;
+        OnAttachEffect = "";
+        OnDisassembleEffect = "";
+    }
 
     public override void Deconstruct()
     {

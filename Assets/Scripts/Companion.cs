@@ -16,16 +16,20 @@ public class Companion : MonoBehaviour
 
     public bool PowerActivated;
 
+    public bool Idle;
+
 	void Start()
 	{
         Type = CompanionType.Other;
         Attachments = new Attachment[3];
         PowerActivated = false;
+        Idle = true;
 	}
 	
 	void Update()
 	{
-		
+        if (Idle)
+            transform.localPosition = new Vector2(-1.0f + Mathf.Cos(Time.time) * 0.5f, 1.0f + Mathf.Sin(Time.time) * 0.5f);
 	}
 
     public void AddAttachment(Attachment attachment, int slot)

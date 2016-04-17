@@ -3,15 +3,15 @@ using System.Collections;
 
 public class HealAttachment : Attachment
 {
-	void Start()
-	{
+    public HealAttachment()
+    {
         Class = AttachmentClass.Defense;
-	}
-	
-	void Update()
-	{
-		
-	}
+        AttachmentName = "Heal";
+        BuildCost = 1000;
+        IsAttached = false;
+        OnAttachEffect = "";
+        OnDisassembleEffect = "";
+    }
 
     public override void Deconstruct()
     {

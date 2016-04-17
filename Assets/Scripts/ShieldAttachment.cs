@@ -3,15 +3,15 @@ using System.Collections;
 
 public class ShieldAttachment : Attachment
 {
-	void Start()
-	{
+    public ShieldAttachment()
+    {
         Class = AttachmentClass.Defense;
-	}
-	
-	void Update()
-	{
-		
-	}
+        AttachmentName = "Shield";
+        BuildCost = 1000;
+        IsAttached = false;
+        OnAttachEffect = "";
+        OnDisassembleEffect = "";
+    }
 
     public override void Deconstruct()
     {
