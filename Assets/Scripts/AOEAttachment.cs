@@ -13,10 +13,10 @@ public class AOEAttachment : Attachment
         IsAttached = false;
         OnAttachEffect = "\tDeals damage to all enemies in a 10 unit radius";
         OnDisassembleEffect = "\tGrants a permanent +1 damage boost";
-
+        Level = 1;
         OneTimeActivated = false;
 
-        AttackDamage = 10;
+        AttackDamage = 5;
     }
 
     public override void BuildAttachment()
@@ -43,5 +43,15 @@ public class AOEAttachment : Attachment
                 enemy.Damage(AttackDamage);
 
         base.ExecuteFunction();
+    }
+
+    public override void LevelUp()
+    {
+        if (Player.Instance.Parts < BuildCost && Level < 3)
+            return;
+
+        AttackDamage += 2;
+
+        base.LevelUp();
     }
 }

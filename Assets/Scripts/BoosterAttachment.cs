@@ -29,6 +29,8 @@ public class BoosterAttachment : Attachment
     {
         Player.Instance.Speed++;
 
+        AttachedTo.Owner.CanSprint = false;
+
         base.Deconstruct();
     }
 
@@ -37,8 +39,18 @@ public class BoosterAttachment : Attachment
         if (OneTimeActivated)
             return;
 
-        //activate bool to allow sprinting
+        AttachedTo.Owner.CanSprint = true;
 
         base.ExecuteFunction();
+    }
+
+    public override void LevelUp()
+    {
+        if (Player.Instance.Parts < BuildCost && Level < 1)
+            return;
+
+
+
+        base.LevelUp();
     }
 }

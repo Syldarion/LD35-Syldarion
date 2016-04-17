@@ -15,6 +15,7 @@ public class Entity : MonoBehaviour
     public float FireCooldown;
     public float JumpForce;
     public float JumpCooldown;
+    public bool CanSprint;
     public bool CanDoubleJump;
     public bool IsGrounded;
     public bool MovingRight;
@@ -72,7 +73,12 @@ public class Entity : MonoBehaviour
 
     public void Damage(int damage)
     {
-        Health -= damage - Armor;
+        int inc_dmg = Mathf.Clamp(damage - Armor, 1, damage);
+
+        if (damage > 0)
+            Health = Mathf.Clamp(Health - inc_dmg, 0, MaxHealth);
+        else
+            Health = Mathf.Clamp(Health - damage, 0, MaxHealth);
 
         HealthBar.rectTransform.localScale = new Vector3((float)Health / (float)MaxHealth, 1.0f, 1.0f);
 
@@ -182,9 +188,11 @@ public class Entity : MonoBehaviour
         float powerup_timer = 10.0f;
         float old_j_force = JumpForce;
         float old_m_force = MoveForce;
+        float old_speed = Speed;
 
-        JumpForce *= 3;
+        JumpForce *= 2;
         MoveForce *= 2;
+        Speed *= 2;
 
         while (powerup_timer > 0.0f)
         {
@@ -195,6 +203,7 @@ public class Entity : MonoBehaviour
 
         JumpForce = old_j_force;
         MoveForce = old_m_force;
+        Speed = old_speed;
 
         DestroyCompanion();
     }

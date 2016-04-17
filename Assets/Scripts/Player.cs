@@ -44,6 +44,11 @@ public class Player : Entity
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && CanSprint)
+            Speed *= 1.5f;
+        else if (Input.GetKeyUp(KeyCode.LeftShift) && CanSprint)
+            Speed /= 1.5f;
+
         if(Input.GetKey(KeyCode.LeftShift))
         {
             if (Input.GetKeyDown(KeyCode.T))
@@ -198,9 +203,11 @@ public class Player : Entity
         float powerup_timer = 10.0f;
         float old_j_force = JumpForce;
         float old_m_force = MoveForce;
+        float old_speed = Speed;
 
         JumpForce *= 2;
         MoveForce *= 2;
+        Speed *= 2;
 
         PowerupBar.color = Color.blue;
 
@@ -216,6 +223,7 @@ public class Player : Entity
 
         JumpForce = old_j_force;
         MoveForce = old_m_force;
+        Speed = old_speed;
 
         PowerupBar.color = Color.white;
 

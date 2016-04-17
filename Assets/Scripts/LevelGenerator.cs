@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,6 +15,8 @@ public class LevelGenerator : MonoBehaviour
     public GameObject ExitPointPrefab;
     public GameObject EnemyPrefab;
     public GameObject WorkshopPrefab;
+
+    public Text FloorCountText;
 
     //Level gen vars
     public float LevelWidth;
@@ -54,6 +57,8 @@ public class LevelGenerator : MonoBehaviour
 
     public void GenerateLevel()
     {
+        FloorCountText.text = string.Format("Floor {0}", CurrentLevel.ToString());
+
         //Create first platform
         CreatePlatform(Vector2.zero, 10.0f);
 
@@ -137,10 +142,5 @@ public class LevelGenerator : MonoBehaviour
         new_platform.transform.localScale = new Vector3(length, 1.0f);
 
         platforms.Add(new_platform);
-    }
-
-    void SpawnEnemy(Vector2 position)
-    {
-
     }
 }

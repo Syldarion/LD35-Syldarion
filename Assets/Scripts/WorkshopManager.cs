@@ -141,6 +141,18 @@ public class WorkshopManager : MonoBehaviour
         CurrentlyLoadedAttachment.Deconstruct();
     }
 
+    public void LevelUpAttachment()
+    {
+        if (!Player.Instance.Inventory.Contains(CurrentlyLoadedAttachment))
+            return;
+
+        CurrentlyLoadedAttachment.LevelUp();
+
+        SelectedReferencePanel.Initialize(CurrentlyLoadedAttachment);
+
+        Player.Instance.PartCountText.text = Player.Instance.Parts.ToString();
+    }
+
     public void OnIconHover()
     {
         Tooltip.Instance.EnableTooltip(true);

@@ -43,4 +43,14 @@ public class GathererAttachment : Attachment
 
         base.ExecuteFunction();
     }
+
+    public override void LevelUp()
+    {
+        if (Player.Instance.Parts < BuildCost && Level < 1)
+            return;
+
+        //I dont even know
+
+        base.LevelUp();
+    }
 }

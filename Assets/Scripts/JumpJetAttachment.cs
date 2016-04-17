@@ -3,8 +3,6 @@ using System.Collections;
 
 public class JumpJetAttachment : Attachment
 {
-
-
     public JumpJetAttachment()
     {
         Class = AttachmentClass.Utility;
@@ -13,7 +11,7 @@ public class JumpJetAttachment : Attachment
         IsAttached = false;
         OnAttachEffect = "\tAllow the player to double jump";
         OnDisassembleEffect = "\tGrants a permanent +2 to jumping power";
-
+        Level = 1;
         OneTimeActivated = false;
     }
 
@@ -44,5 +42,15 @@ public class JumpJetAttachment : Attachment
         AttachedTo.Owner.CanDoubleJump = true;
 
         base.ExecuteFunction();
+    }
+
+    public override void LevelUp()
+    {
+        if (Player.Instance.Parts < BuildCost && Level < 1)
+            return;
+
+        //increase extra jump count
+
+        base.LevelUp();
     }
 }

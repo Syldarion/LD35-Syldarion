@@ -32,6 +32,7 @@ public class Attachment
         AttachmentName = "None";
         BuildCost = 0;
         IsAttached = false;
+        Level = 1;
         OneTimeActivated = false;
     }
 
@@ -50,5 +51,10 @@ public class Attachment
     {
         if (!OneTimeActivated)
             OneTimeActivated = true;
+    }
+
+    public virtual void LevelUp()
+    {
+        Player.Instance.AddParts(-BuildCost);
     }
 }
