@@ -3,14 +3,18 @@ using System.Collections;
 
 public class HealAttachment : Attachment
 {
+    public int HealAmount;
+
     public HealAttachment()
     {
         Class = AttachmentClass.Defense;
         AttachmentName = "Heal";
         BuildCost = 1000;
         IsAttached = false;
-        OnAttachEffect = "";
-        OnDisassembleEffect = "";
+        OnAttachEffect = "\tYour robot will periodically heal you";
+        OnDisassembleEffect = "\tGrants a permanent +10 to health";
+
+        HealAmount = 5;
     }
 
     public override void BuildAttachment()
@@ -28,5 +32,10 @@ public class HealAttachment : Attachment
         Player.Instance.Health += 10;
 
         base.Deconstruct();
+    }
+
+    public override void ExecuteFunction()
+    {
+        AttachedTo.Owner.Health = Mathf.Clamp(AttachedTo.Owner.Health + HealAmount, 0, AttachedTo.Owner.MaxHealth);
     }
 }

@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Attachment
 {
+    public Companion AttachedTo;
+
     public enum AttachmentClass
     {
         Attack = 1,
@@ -36,6 +38,11 @@ public class Attachment
     }
 
     public virtual void Deconstruct()
+    {
+        Player.Instance.Inventory.Remove(this);
+    }
+
+    public virtual void ExecuteFunction()
     {
 
     }

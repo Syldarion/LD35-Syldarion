@@ -9,8 +9,8 @@ public class BoosterAttachment : Attachment
         AttachmentName = "Booster";
         BuildCost = 1000;
         IsAttached = false;
-        OnAttachEffect = "";
-        OnDisassembleEffect = "";
+        OnAttachEffect = "\tAllows the player to have a large temporary speed boost";
+        OnDisassembleEffect = "\tGrants a permanent +1 movement speed boost";
     }
 
     public override void BuildAttachment()
@@ -28,5 +28,10 @@ public class BoosterAttachment : Attachment
         Player.Instance.Speed++;
 
         base.Deconstruct();
+    }
+
+    public override void ExecuteFunction()
+    {
+        AttachedTo.Owner.Speed *= 2;
     }
 }

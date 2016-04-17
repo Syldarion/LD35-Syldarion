@@ -28,6 +28,8 @@ public class LevelGenerator : MonoBehaviour
     public int EnemyCount;
     public int WorkshopCount;
 
+    public List<Enemy> Enemies;
+
     List<GameObject> platforms;
 
 	void Start()
@@ -35,6 +37,8 @@ public class LevelGenerator : MonoBehaviour
         Instance = this;
 
         CurrentLevel = 1;
+
+        Enemies = new List<Enemy>();
         platforms = new List<GameObject>();
 
         GenerateLevel();
@@ -87,6 +91,7 @@ public class LevelGenerator : MonoBehaviour
         {
             Enemy new_enemy = Instantiate(EnemyPrefab).GetComponent<Enemy>();
             new_enemy.transform.position = platforms[Random.Range(0, platforms.Count)].transform.position + new Vector3(0.0f, 5.0f);
+            Enemies.Add(new_enemy);
         }
 
         for(int i = 0; i < WorkshopCount; i++)

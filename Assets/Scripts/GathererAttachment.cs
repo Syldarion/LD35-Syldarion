@@ -9,8 +9,8 @@ public class GathererAttachment : Attachment
         AttachmentName = "Gatherer";
         BuildCost = 1000;
         IsAttached = false;
-        OnAttachEffect = "";
-        OnDisassembleEffect = "";
+        OnAttachEffect = "\tEnemies have a chance to drop double parts";
+        OnDisassembleEffect = "\tGrants a +10% boost to part gathering";
     }
 
     public override void BuildAttachment()
@@ -25,6 +25,15 @@ public class GathererAttachment : Attachment
 
     public override void Deconstruct()
     {
+        Player.Instance.PartDropModifier += 0.1f;
+
+        AttachedTo.Owner.DoubleDrops = false;
+
         base.Deconstruct();
+    }
+
+    public override void ExecuteFunction()
+    {
+        AttachedTo.Owner.DoubleDrops = true;
     }
 }

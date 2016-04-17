@@ -9,8 +9,8 @@ public class JumpJetAttachment : Attachment
         AttachmentName = "Jump Jet";
         BuildCost = 1000;
         IsAttached = false;
-        OnAttachEffect = "";
-        OnDisassembleEffect = "";
+        OnAttachEffect = "\tAllow the player to double jump";
+        OnDisassembleEffect = "\tGrants a permanent +2 to jumping power";
     }
 
     public override void BuildAttachment()
@@ -25,8 +25,15 @@ public class JumpJetAttachment : Attachment
 
     public override void Deconstruct()
     {
-        Player.Instance.JumpForce++;
+        Player.Instance.JumpForce += 2;
+
+        AttachedTo.Owner.CanDoubleJump = false;
 
         base.Deconstruct();
+    }
+
+    public override void ExecuteFunction()
+    {
+        AttachedTo.Owner.CanDoubleJump = true;
     }
 }

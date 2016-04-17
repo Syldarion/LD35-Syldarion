@@ -11,6 +11,8 @@ public class Player : Entity
     public Text PartCountText;
     public List<Attachment> Inventory;
 
+    public float PartDropModifier;
+
     public bool AtWorkshop;
 
     Rigidbody2D my_rb;
@@ -20,6 +22,8 @@ public class Player : Entity
         Instance = this;
         Inventory = new List<Attachment>();
         AtWorkshop = false;
+
+        PartDropModifier = 1.0f;
 
         MovingRight = true;
 
@@ -97,6 +101,8 @@ public class Player : Entity
 
     public void AddToInventory(Attachment attachment)
     {
+        attachment.AttachedTo = null;
+
         Inventory.Add(attachment);
     }
 

@@ -9,8 +9,8 @@ public class ShieldAttachment : Attachment
         AttachmentName = "Shield";
         BuildCost = 1000;
         IsAttached = false;
-        OnAttachEffect = "";
-        OnDisassembleEffect = "";
+        OnAttachEffect = "\tAllows your robot to deflect shots from behind";
+        OnDisassembleEffect = "\tGrants a permanent +1 armor boost";
     }
 
     public override void BuildAttachment()
@@ -28,5 +28,14 @@ public class ShieldAttachment : Attachment
         Player.Instance.Armor++;
 
         base.Deconstruct();
+    }
+
+    public override void ExecuteFunction()
+    {
+        BoxCollider2D back_shield = AttachedTo.gameObject.AddComponent<BoxCollider2D>();
+        back_shield.offset = new Vector2(0.0f, -2.0f);
+        back_shield.size = new Vector2(1.0f, 5.0f);
+
+        base.ExecuteFunction();
     }
 }

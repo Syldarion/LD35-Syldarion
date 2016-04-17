@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Companion : MonoBehaviour
 {
+    public Entity Owner;
+
     public enum CompanionType
     {
         Attack = 3,
@@ -32,12 +34,22 @@ public class Companion : MonoBehaviour
             transform.localPosition = new Vector2(-1.0f + Mathf.Cos(Time.time) * 0.5f, 1.0f + Mathf.Sin(Time.time) * 0.5f);
 	}
 
+    public void SetOwner(Entity new_owner)
+    {
+        Owner = new_owner;
+        if (Owner.MyCompanion)
+            Destroy(Owner.MyCompanion);
+        Owner.MyCompanion = this;
+        transform.SetParent(Owner.transform);
+    }
+
     public void AddAttachment(Attachment attachment, int slot)
     {
-        if (Attachments[slot] != null)
+        if (Attachments[slot] != null && Owner == Player.Instance)
             Player.Instance.AddToInventory(Attachments[slot]);
 
         Attachments[slot] = attachment;
+        Attachments[slot].AttachedTo = this;
 
         UpdateType();
     }

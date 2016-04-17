@@ -15,8 +15,10 @@ public class Entity : MonoBehaviour
     public float FireCooldown;
     public float JumpForce;
     public float JumpCooldown;
+    public bool CanDoubleJump;
     public bool IsGrounded;
     public bool MovingRight;
+    public bool DoubleDrops;
 
     public Companion MyCompanion;
 
@@ -26,6 +28,7 @@ public class Entity : MonoBehaviour
     public int Health;
     public int Armor;
     public int DamageModifier;
+    public int DamageReflection;
 
     public float FireTimer;
     public float JumpTimer;
@@ -78,7 +81,17 @@ public class Entity : MonoBehaviour
     {
         GameObject drop_parts = Instantiate(PartDropPrefab);
         drop_parts.transform.position = transform.position;
-        drop_parts.GetComponent<PartDrop>().Parts = Parts;
+        drop_parts.GetComponent<PartDrop>().Parts = (int)(Parts * Player.Instance.PartDropModifier);
+
+        if(Player.Instance.DoubleDrops && Random.Range(0, 100) > 75)
+        {
+            drop_parts = Instantiate(PartDropPrefab);
+            drop_parts.transform.position = transform.position;
+            drop_parts.GetComponent<PartDrop>().Parts = (int)(Parts * Player.Instance.PartDropModifier);
+        }
+
+        if (GetComponent<Enemy>())
+            LevelGenerator.Instance.Enemies.Remove(GetComponent<Enemy>());
 
         Destroy(gameObject);
     }

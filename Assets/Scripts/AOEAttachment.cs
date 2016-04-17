@@ -3,14 +3,18 @@ using System.Collections;
 
 public class AOEAttachment : Attachment
 {
+    public int AttackDamage;
+
     public AOEAttachment()
     {
         Class = AttachmentClass.Attack;
         AttachmentName = "AOE";
         BuildCost = 1000;
         IsAttached = false;
-        OnAttachEffect = "";
-        OnDisassembleEffect = "";
+        OnAttachEffect = "\tDeals damage to all enemies in a 10 unit radius";
+        OnDisassembleEffect = "\tGrants a permanent +1 damage boost";
+
+        AttackDamage = 10;
     }
 
     public override void BuildAttachment()
@@ -25,6 +29,15 @@ public class AOEAttachment : Attachment
 
     public override void Deconstruct()
     {
+        Player.Instance.DamageModifier++;
+
         base.Deconstruct();
+    }
+
+    public override void ExecuteFunction()
+    {
+        foreach (Enemy enemy in LevelGenerator.Instance.Enemies)
+            if (Vector2.Distance(AttachedTo.Owner.transform.position, enemy.transform.position) <= 10.0f)
+                enemy.Damage(AttackDamage);
     }
 }
