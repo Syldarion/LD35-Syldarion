@@ -122,6 +122,12 @@ public class WorkshopManager : MonoBehaviour
         if (Player.Instance.Inventory.Contains(CurrentlyLoadedAttachment))
             return;
 
+        if (CurrentlyLoadedAttachment == null)
+            return;
+
+        if (Player.Instance.Parts < CurrentlyLoadedAttachment.BuildCost)
+            return;
+
         CurrentlyLoadedAttachment.BuildAttachment();
 
         Player.Instance.PartCountText.text = Player.Instance.Parts.ToString();
@@ -144,6 +150,9 @@ public class WorkshopManager : MonoBehaviour
     public void LevelUpAttachment()
     {
         if (!Player.Instance.Inventory.Contains(CurrentlyLoadedAttachment))
+            return;
+
+        if (!SelectedReferencePanel)
             return;
 
         SelectedReferencePanel.ReferenceAttachment.LevelUp();

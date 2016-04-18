@@ -35,6 +35,7 @@ public class LevelGenerator : MonoBehaviour
     public List<Workshop> Workshops;
 
     List<GameObject> platforms;
+    List<ExitPoint> exits;
 
     List<int> occupied_platform_indices;
 
@@ -47,6 +48,7 @@ public class LevelGenerator : MonoBehaviour
         Enemies = new List<Enemy>();
         Workshops = new List<Workshop>();
         platforms = new List<GameObject>();
+        exits = new List<ExitPoint>();
         occupied_platform_indices = new List<int>();
 
         GenerateLevel();
@@ -92,6 +94,12 @@ public class LevelGenerator : MonoBehaviour
             ExitPoint new_exit_point = Instantiate(ExitPointPrefab).GetComponent<ExitPoint>();
             new_exit_point.name = string.Format("Path{0}Exit", p + 1);
             new_exit_point.transform.position = platforms[platforms.Count - 1].transform.position + new Vector3(0.0f, 2.0f);
+
+            exits.Add(new_exit_point);
+
+            platforms[platforms.Count - 1].GetComponent<Platform>().CanMove = false;
+
+            occupied_platform_indices.Add(platforms.Count - 1);
         }
 
         //platforms[0] should be the first spawned platform at (0,0)
@@ -146,6 +154,12 @@ public class LevelGenerator : MonoBehaviour
         foreach (Workshop workshop in Workshops)
             Destroy(workshop.gameObject);
         Workshops.Clear();
+
+        foreach (ExitPoint exit in exits)
+            Destroy(exit.gameObject);
+        exits.Clear();
+
+        occupied_platform_indices.Clear();
     }
 
     void CreatePlatform(Vector2 position, float length)

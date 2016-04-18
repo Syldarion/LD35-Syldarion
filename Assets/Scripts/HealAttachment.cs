@@ -31,7 +31,7 @@ public class HealAttachment : Attachment
 
     public override void Deconstruct()
     {
-        Player.Instance.Health += 10;
+        Player.Instance.MaxHealth += 10;
 
         base.Deconstruct();
     }
