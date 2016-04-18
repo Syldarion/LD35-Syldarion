@@ -10,7 +10,7 @@ public class ThornAttachment : Attachment
     {
         Class = AttachmentClass.Defense;
         AttachmentName = "Thorns";
-        BuildCost = 1000;
+        BuildCost = 500;
         IsAttached = false;
         OnAttachEffect = "\tPeriodically knocks enemies away from the player";
         OnDisassembleEffect = "\tGrants a permanent +1 damage reflection boost";

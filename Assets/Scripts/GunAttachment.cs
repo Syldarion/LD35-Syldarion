@@ -10,7 +10,7 @@ public class GunAttachment : Attachment
     {
         Class = AttachmentClass.Attack;
         AttachmentName = "Gun";
-        BuildCost = 1000;
+        BuildCost = 500;
         IsAttached = false;
         OnAttachEffect = "\tAllows your robot to shoot enemies";
         OnDisassembleEffect = "\tGrants a permanent +1 damage boost";

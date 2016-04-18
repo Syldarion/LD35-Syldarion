@@ -9,7 +9,7 @@ public class HealAttachment : Attachment
     {
         Class = AttachmentClass.Defense;
         AttachmentName = "Heal";
-        BuildCost = 1000;
+        BuildCost = 500;
         IsAttached = false;
         OnAttachEffect = "\tYour robot will periodically heal you";
         OnDisassembleEffect = "\tGrants a permanent +10 to health";

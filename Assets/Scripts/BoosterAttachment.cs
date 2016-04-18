@@ -7,7 +7,7 @@ public class BoosterAttachment : Attachment
     {
         Class = AttachmentClass.Utility;
         AttachmentName = "Booster";
-        BuildCost = 1000;
+        BuildCost = 500;
         IsAttached = false;
         OnAttachEffect = "\tAllows the player to have a large temporary speed boost";
         OnDisassembleEffect = "\tGrants a permanent +1 movement speed boost";

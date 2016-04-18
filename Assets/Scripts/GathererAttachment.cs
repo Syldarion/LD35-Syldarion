@@ -7,7 +7,7 @@ public class GathererAttachment : Attachment
     {
         Class = AttachmentClass.Utility;
         AttachmentName = "Gatherer";
-        BuildCost = 1000;
+        BuildCost = 500;
         IsAttached = false;
         OnAttachEffect = "\tEnemies have a chance to drop double parts";
         OnDisassembleEffect = "\tGrants a +10% boost to part gathering";

@@ -9,7 +9,7 @@ public class AOEAttachment : Attachment
     {
         Class = AttachmentClass.Attack;
         AttachmentName = "AOE";
-        BuildCost = 1000;
+        BuildCost = 500;
         IsAttached = false;
         OnAttachEffect = "\tDeals damage to all enemies in a 10 unit radius";
         OnDisassembleEffect = "\tGrants a permanent +1 damage boost";

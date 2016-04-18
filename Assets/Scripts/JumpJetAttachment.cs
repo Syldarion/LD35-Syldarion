@@ -7,7 +7,7 @@ public class JumpJetAttachment : Attachment
     {
         Class = AttachmentClass.Utility;
         AttachmentName = "Jump Jet";
-        BuildCost = 1000;
+        BuildCost = 500;
         IsAttached = false;
         OnAttachEffect = "\tAllow the player to double jump";
         OnDisassembleEffect = "\tGrants a permanent +2 to jumping power";

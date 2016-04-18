@@ -7,7 +7,7 @@ public class ShieldAttachment : Attachment
     {
         Class = AttachmentClass.Defense;
         AttachmentName = "Shield";
-        BuildCost = 1000;
+        BuildCost = 500;
         IsAttached = false;
         OnAttachEffect = "\tAllows your robot to deflect shots from behind";
         OnDisassembleEffect = "\tGrants a permanent +1 armor boost";
