@@ -3,16 +3,26 @@ using System.Collections;
 
 public class GathererAttachment : Attachment
 {
+    public int GatheringPercentBoost;
+
     public GathererAttachment()
     {
         Class = AttachmentClass.Utility;
         AttachmentName = "Gatherer";
         BuildCost = 500;
         IsAttached = false;
-        OnAttachEffect = "\tEnemies have a chance to drop double parts";
-        OnDisassembleEffect = "\tGrants a +10% boost to part gathering";
-
+        Level = 1;
         OneTimeActivated = false;
+
+        GatheringPercentBoost = 10;
+
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        OnAttachEffect = "\tEnemies have a chance to drop double parts";
+        OnDisassembleEffect = string.Format("\tGrants a +{0}% boost to part gathering", GatheringPercentBoost);
     }
 
     public override void BuildAttachment()
@@ -27,7 +37,7 @@ public class GathererAttachment : Attachment
 
     public override void Deconstruct()
     {
-        Player.Instance.PartDropModifier += 0.1f;
+        Player.Instance.PartDropModifier += (float)GatheringPercentBoost / 100;
 
         AttachedTo.Owner.DoubleDrops = false;
 
@@ -46,10 +56,12 @@ public class GathererAttachment : Attachment
 
     public override void LevelUp()
     {
-        if (Player.Instance.Parts < BuildCost || Level >= 1)
+        if (Player.Instance.Parts < BuildCost || Level >= 3)
             return;
 
-        //I dont even know
+        GatheringPercentBoost += 10;
+
+        UpdateText();
 
         base.LevelUp();
     }

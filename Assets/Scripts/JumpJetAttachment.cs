@@ -3,16 +3,26 @@ using System.Collections;
 
 public class JumpJetAttachment : Attachment
 {
+    public float JumpingPowerBoost;
+
     public JumpJetAttachment()
     {
         Class = AttachmentClass.Utility;
         AttachmentName = "Jump Jet";
         BuildCost = 500;
         IsAttached = false;
-        OnAttachEffect = "\tAllow the player to double jump";
-        OnDisassembleEffect = "\tGrants a permanent +2 to jumping power";
         Level = 1;
         OneTimeActivated = false;
+
+        JumpingPowerBoost = 2.0f;
+
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        OnAttachEffect = "\tAllow the player to double jump";
+        OnDisassembleEffect = string.Format("\tGrants a permanent +{0} to jumping power", JumpingPowerBoost);
     }
 
     public override void BuildAttachment()
@@ -46,10 +56,12 @@ public class JumpJetAttachment : Attachment
 
     public override void LevelUp()
     {
-        if (Player.Instance.Parts < BuildCost || Level >= 1)
+        if (Player.Instance.Parts < BuildCost || Level >= 3)
             return;
 
-        //increase extra jump count
+        JumpingPowerBoost += 2.0f;
+
+        UpdateText();
 
         base.LevelUp();
     }

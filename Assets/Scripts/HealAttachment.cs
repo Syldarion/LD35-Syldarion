@@ -4,6 +4,7 @@ using System.Collections;
 public class HealAttachment : Attachment
 {
     public int HealAmount;
+    public int HealthBoostAmount;
 
     public HealAttachment()
     {
@@ -11,12 +12,19 @@ public class HealAttachment : Attachment
         AttachmentName = "Heal";
         BuildCost = 500;
         IsAttached = false;
-        OnAttachEffect = "\tYour robot will periodically heal you";
-        OnDisassembleEffect = "\tGrants a permanent +10 to health";
         Level = 1;
         OneTimeActivated = false;
 
-        HealAmount = 5;
+        HealAmount = 1;
+        HealthBoostAmount = 10;
+
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        OnAttachEffect = string.Format("\tYour robot will heal you for {0} every second", HealAmount);
+        OnDisassembleEffect = string.Format("\tGrants a permanent +{0} to health", HealthBoostAmount);
     }
 
     public override void BuildAttachment()
@@ -48,7 +56,10 @@ public class HealAttachment : Attachment
         if (Player.Instance.Parts < BuildCost || Level >= 3)
             return;
 
-        HealAmount += 5;
+        HealAmount += 1;
+        HealthBoostAmount += 10;
+
+        UpdateText();
 
         base.LevelUp();
     }

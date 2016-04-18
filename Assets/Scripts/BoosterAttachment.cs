@@ -3,16 +3,26 @@ using System.Collections;
 
 public class BoosterAttachment : Attachment
 {
+    public int MovementSpeedBoost;
+
     public BoosterAttachment()
     {
         Class = AttachmentClass.Utility;
         AttachmentName = "Booster";
         BuildCost = 500;
         IsAttached = false;
-        OnAttachEffect = "\tAllows the player to have a large temporary speed boost";
-        OnDisassembleEffect = "\tGrants a permanent +1 movement speed boost";
-
+        Level = 1;
         OneTimeActivated = false;
+
+        MovementSpeedBoost = 1;
+
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        OnAttachEffect = "\tAllows player to sprint with the shift key";
+        OnDisassembleEffect = string.Format("\tGrants a permanent +{0} movement speed boost", MovementSpeedBoost);
     }
 
     public override void BuildAttachment()
@@ -27,7 +37,7 @@ public class BoosterAttachment : Attachment
 
     public override void Deconstruct()
     {
-        Player.Instance.Speed++;
+        Player.Instance.Speed += MovementSpeedBoost;
 
         AttachedTo.Owner.CanSprint = false;
 
@@ -49,7 +59,9 @@ public class BoosterAttachment : Attachment
         if (Player.Instance.Parts < BuildCost || Level >= 1)
             return;
 
+        MovementSpeedBoost++;
 
+        UpdateText();
 
         base.LevelUp();
     }

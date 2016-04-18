@@ -5,6 +5,7 @@ public class ThornAttachment : Attachment
 {
     public float PushbackRadius;
     public float PushbackForce;
+    public int DamageReflectionBoost;
 
     public ThornAttachment()
     {
@@ -12,13 +13,20 @@ public class ThornAttachment : Attachment
         AttachmentName = "Thorns";
         BuildCost = 500;
         IsAttached = false;
-        OnAttachEffect = "\tPeriodically knocks enemies away from the player";
-        OnDisassembleEffect = "\tGrants a permanent +1 damage reflection boost";
         Level = 1;
         OneTimeActivated = false;
 
         PushbackRadius = 5.0f;
         PushbackForce = 5.0f;
+        DamageReflectionBoost = 1;
+
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        OnAttachEffect = string.Format("\tPeriodically knocks enemies in a {0} unity radius away from the player", PushbackRadius);
+        OnDisassembleEffect = string.Format("\tGrants a permanent +{0} damage reflection boost", DamageReflectionBoost);
     }
 
     public override void BuildAttachment()
@@ -33,7 +41,7 @@ public class ThornAttachment : Attachment
 
     public override void Deconstruct()
     {
-        Player.Instance.DamageReflection++;
+        Player.Instance.DamageReflection += DamageReflectionBoost;
 
         base.Deconstruct();
     }
@@ -53,6 +61,9 @@ public class ThornAttachment : Attachment
             return;
 
         PushbackRadius += 2.0f;
+        DamageReflectionBoost++;
+
+        UpdateText();
 
         base.LevelUp();
     }

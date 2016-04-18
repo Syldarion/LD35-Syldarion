@@ -5,6 +5,7 @@ public class SwordAttachment : Attachment
 {
     public float AttackRadius;
     public int AttackDamage;
+    public int DamageBoost;
 
     public SwordAttachment()
     {
@@ -12,13 +13,20 @@ public class SwordAttachment : Attachment
         AttachmentName = "Sword";
         BuildCost = 500;
         IsAttached = false;
-        OnAttachEffect = "\tAllows your robot to attack enemies with a sword";
-        OnDisassembleEffect = "\tGrants a permanent +1 damage boost";
         Level = 1;
         OneTimeActivated = false;
 
         AttackRadius = 2.0f;
         AttackDamage = 15;
+        DamageBoost = 1;
+
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        OnAttachEffect = string.Format("\tDeals {0} damage per second to enemies in a 2 unit radius", AttackDamage);
+        OnDisassembleEffect = string.Format("\tGrants a permanent +{0} damage boost", DamageBoost);
     }
 
     public override void BuildAttachment()
@@ -33,7 +41,7 @@ public class SwordAttachment : Attachment
 
     public override void Deconstruct()
     {
-        Player.Instance.DamageModifier++;
+        Player.Instance.DamageModifier += DamageBoost;
 
         base.Deconstruct();
     }
@@ -53,6 +61,9 @@ public class SwordAttachment : Attachment
             return;
 
         AttackDamage += 2;
+        DamageBoost++;
+
+        UpdateText();
 
         base.LevelUp();
     }

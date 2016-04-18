@@ -4,6 +4,7 @@ using System.Collections;
 public class AOEAttachment : Attachment
 {
     public int AttackDamage;
+    public int DamageBoost;
 
     public AOEAttachment()
     {
@@ -11,12 +12,19 @@ public class AOEAttachment : Attachment
         AttachmentName = "AOE";
         BuildCost = 500;
         IsAttached = false;
-        OnAttachEffect = "\tDeals damage to all enemies in a 10 unit radius";
-        OnDisassembleEffect = "\tGrants a permanent +1 damage boost";
         Level = 1;
         OneTimeActivated = false;
 
         AttackDamage = 5;
+        DamageBoost = 1;
+
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        OnAttachEffect = string.Format("\tDeals {0} damage to all enemies in a 10 unit radius", AttackDamage);
+        OnDisassembleEffect = string.Format("\tGrants a permanent +{0} damage boost", DamageBoost);
     }
 
     public override void BuildAttachment()
@@ -31,7 +39,7 @@ public class AOEAttachment : Attachment
 
     public override void Deconstruct()
     {
-        Player.Instance.DamageModifier++;
+        Player.Instance.DamageModifier += DamageBoost;
 
         base.Deconstruct();
     }
@@ -51,6 +59,9 @@ public class AOEAttachment : Attachment
             return;
 
         AttackDamage += 2;
+        DamageBoost++;
+
+        UpdateText();
 
         base.LevelUp();
     }

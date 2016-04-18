@@ -3,16 +3,26 @@ using System.Collections;
 
 public class ShieldAttachment : Attachment
 {
+    public int ArmorBoost;
+
     public ShieldAttachment()
     {
         Class = AttachmentClass.Defense;
         AttachmentName = "Shield";
         BuildCost = 500;
         IsAttached = false;
-        OnAttachEffect = "\tAllows your robot to deflect shots from behind";
-        OnDisassembleEffect = "\tGrants a permanent +1 armor boost";
         Level = 1;
         OneTimeActivated = false;
+
+        ArmorBoost = 1;
+
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        OnAttachEffect = "\tAllows your robot to deflect shots from behind";
+        OnDisassembleEffect = string.Format("\tGrants a permanent +{0} armor boost", ArmorBoost);
     }
 
     public override void BuildAttachment()
@@ -27,7 +37,7 @@ public class ShieldAttachment : Attachment
 
     public override void Deconstruct()
     {
-        Player.Instance.Armor++;
+        Player.Instance.Armor += ArmorBoost;
 
         if (AttachedTo.GetComponent<BoxCollider2D>())
             Player.Destroy(AttachedTo.GetComponent<BoxCollider2D>());
@@ -50,10 +60,12 @@ public class ShieldAttachment : Attachment
 
     public override void LevelUp()
     {
-        if (Player.Instance.Parts < BuildCost || Level >= 1)
+        if (Player.Instance.Parts < BuildCost || Level >= 3)
             return;
 
+        ArmorBoost++;
 
+        UpdateText();
 
         base.LevelUp();
     }
