@@ -51,15 +51,15 @@ public class AttachmentManager : MonoBehaviour
             new_panel.Initialize(attachment);
         }
 
-        for (int i = 0; i < 3; i++)
-            if (Player.Instance.MyCompanion.Attachments[i] != null)
-            {
-                AttachmentReferencePanel new_panel = Instantiate(AttachmentReferencePanelPrefab).GetComponent<AttachmentReferencePanel>();
-                new_panel.transform.SetParent(Slots[i].transform, false);
-                new_panel.Initialize(Player.Instance.MyCompanion.Attachments[i]);
-                new_panel.GetComponent<CanvasGroup>().alpha = 0;
-                new_panel.GetComponent<CanvasGroup>().blocksRaycasts = false;
-            }
+        //for (int i = 0; i < 3; i++)
+        //    if (Player.Instance.MyCompanion.Attachments[i] != null)
+        //    {
+        //        AttachmentReferencePanel new_panel = Instantiate(AttachmentReferencePanelPrefab).GetComponent<AttachmentReferencePanel>();
+        //        new_panel.transform.SetParent(Slots[i].transform, false);
+        //        new_panel.Initialize(Player.Instance.MyCompanion.Attachments[i]);
+        //        new_panel.GetComponent<CanvasGroup>().alpha = 0;
+        //        new_panel.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        //    }
 
         LoadAttachment(new Attachment());
 
@@ -73,9 +73,9 @@ public class AttachmentManager : MonoBehaviour
         foreach (Transform child in InventoryContainer.transform)
             Destroy(child.gameObject);
 
-        for (int i = 0; i < 3; i++)
-            if (Slots[i].transform.childCount > 0)
-                Destroy(Slots[i].transform.GetChild(0).gameObject);
+        //for (int i = 0; i < 3; i++)
+        //    if (Slots[i].transform.childCount > 0)
+        //        Destroy(Slots[i].transform.GetChild(0).gameObject);
 
         PanelUtilities.DeactivatePanel(GetComponent<CanvasGroup>());
     }
@@ -112,6 +112,23 @@ public class AttachmentManager : MonoBehaviour
     {
         Player.Instance.Inventory.Remove(attachment);
         Player.Instance.MyCompanion.AddAttachment(attachment, slot);
+
+        switch(attachment.Class)
+        {
+            case Attachment.AttachmentClass.Attack:
+                Slots[slot].GetComponent<Image>().color = Color.red;
+                break;
+            case Attachment.AttachmentClass.Defense:
+                Slots[slot].GetComponent<Image>().color = Color.green;
+                break;
+            case Attachment.AttachmentClass.Utility:
+                Slots[slot].GetComponent<Image>().color = Color.blue;
+                break;
+            case Attachment.AttachmentClass.None:
+            default:
+                Slots[slot].GetComponent<Image>().color = Color.white;
+                break;
+        }
     }
 
     public void DetachAttachment(Attachment attachment)
@@ -123,6 +140,9 @@ public class AttachmentManager : MonoBehaviour
                 Player.Instance.AddToInventory(attachment);
                 Player.Instance.MyCompanion.Attachments[i] = null;
                 attachment.OneTimeActivated = false;
+
+                Slots[i].GetComponent<Image>().color = Color.white;
+
                 return;
             }
         }
