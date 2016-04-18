@@ -32,6 +32,7 @@ public class LevelGenerator : MonoBehaviour
     public int WorkshopCount;
 
     public List<Enemy> Enemies;
+    public List<Workshop> Workshops;
 
     List<GameObject> platforms;
 
@@ -44,6 +45,7 @@ public class LevelGenerator : MonoBehaviour
         CurrentLevel = 1;
 
         Enemies = new List<Enemy>();
+        Workshops = new List<Workshop>();
         platforms = new List<GameObject>();
         occupied_platform_indices = new List<int>();
 
@@ -124,6 +126,8 @@ public class LevelGenerator : MonoBehaviour
 
             platforms[plat_index].GetComponent<Platform>().CanMove = false;
             occupied_platform_indices.Add(plat_index);
+
+            Workshops.Add(new_workshop);
         }
 
         Player.Instance.Spawn(SpawnPoint.transform.position);
@@ -134,6 +138,14 @@ public class LevelGenerator : MonoBehaviour
         foreach (GameObject platform in platforms)
             Destroy(platform);
         platforms.Clear();
+
+        foreach (Enemy enemy in Enemies)
+            Destroy(enemy.gameObject);
+        Enemies.Clear();
+
+        foreach (Workshop workshop in Workshops)
+            Destroy(workshop.gameObject);
+        Workshops.Clear();
     }
 
     void CreatePlatform(Vector2 position, float length)
