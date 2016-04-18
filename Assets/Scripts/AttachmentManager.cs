@@ -113,22 +113,16 @@ public class AttachmentManager : MonoBehaviour
         Player.Instance.Inventory.Remove(attachment);
         Player.Instance.MyCompanion.AddAttachment(attachment, slot);
 
-        switch(attachment.Class)
-        {
-            case Attachment.AttachmentClass.Attack:
-                Slots[slot].GetComponent<Image>().color = Color.red;
-                break;
-            case Attachment.AttachmentClass.Defense:
-                Slots[slot].GetComponent<Image>().color = Color.green;
-                break;
-            case Attachment.AttachmentClass.Utility:
-                Slots[slot].GetComponent<Image>().color = Color.blue;
-                break;
-            case Attachment.AttachmentClass.None:
-            default:
-                Slots[slot].GetComponent<Image>().color = Color.white;
-                break;
-        }
+        Color new_highlight_color = new Color();
+        new_highlight_color.r = (int) attachment.Class == 1 ? 1 : 0;
+        new_highlight_color.g = (int) attachment.Class == 2 ? 1 : 0;
+        new_highlight_color.b = (int) attachment.Class == 4 ? 1 : 0;
+        new_highlight_color.a = 1;
+        Color new_normal_color = new_highlight_color;
+        new_normal_color.a = 0.8f;
+
+        Slots[slot].GetComponent<NonRectangularButton>().NormalColor = new_normal_color;
+        Slots[slot].GetComponent<NonRectangularButton>().HighlightedColor = new_highlight_color;
     }
 
     public void DetachAttachment(Attachment attachment)
@@ -141,7 +135,8 @@ public class AttachmentManager : MonoBehaviour
                 Player.Instance.MyCompanion.Attachments[i] = null;
                 attachment.OneTimeActivated = false;
 
-                Slots[i].GetComponent<Image>().color = Color.white;
+                Slots[i].GetComponent<NonRectangularButton>().HighlightedColor = Color.white;
+                Slots[i].GetComponent<NonRectangularButton>().NormalColor = new Color(1, 1, 1, 0.8f);
 
                 return;
             }

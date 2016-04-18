@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public class AttachmentSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
+public class AttachmentSlot : MonoBehaviour, IDropHandler
 {
     public AttachmentReferencePanel CurrentAttachmentPanel;
 
@@ -36,7 +36,7 @@ public class AttachmentSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void LoadSlotInfo()
     {
         if (Player.Instance.MyCompanion.Attachments[SlotNumber] != null)
             AttachmentManager.Instance.LoadAttachment(Player.Instance.MyCompanion.Attachments[SlotNumber]);
