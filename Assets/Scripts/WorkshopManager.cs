@@ -122,7 +122,7 @@ public class WorkshopManager : MonoBehaviour
         if (Player.Instance.Inventory.Contains(CurrentlyLoadedAttachment))
             return;
 
-        if (CurrentlyLoadedAttachment == null)
+        if (CurrentlyLoadedAttachment == null || CurrentlyLoadedAttachment.Class == Attachment.AttachmentClass.None)
             return;
 
         if (Player.Instance.Parts < CurrentlyLoadedAttachment.BuildCost)

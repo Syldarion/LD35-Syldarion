@@ -24,6 +24,8 @@ public class AttachmentSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
         {
             DraggableObject.DragObject.transform.SetParent(transform, false);
             DraggableObject.DragObject.transform.localPosition = Vector2.zero;
+            DraggableObject.DragObject.transform.rotation = Quaternion.identity;
+            DraggableObject.DragObject.GetComponent<RectTransform>().sizeDelta = new Vector2(180, 100);
             DraggableObject.DragObject.GetComponent<CanvasGroup>().alpha = 0;
             DraggableObject.DragObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
@@ -31,8 +33,14 @@ public class AttachmentSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
 
             if (arp)
             {
+                AttachmentManager.Instance.DetachAttachment(arp.ReferenceAttachment);
                 AttachmentManager.Instance.AttachAttachment(arp.ReferenceAttachment, SlotNumber);
             }
+        }
+        else if(DraggableObject.DragObject)
+        {
+            DraggableObject.DragObject.GetComponent<CanvasGroup>().alpha = 0;
+            DraggableObject.DragObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
     }
 

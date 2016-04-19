@@ -16,7 +16,7 @@ public class HealAttachment : Attachment
         Level = 1;
         OneTimeActivated = false;
 
-        HealAmount = 5;
+        HealAmount = 1;
     }
 
     public override void BuildAttachment()
@@ -48,7 +48,7 @@ public class HealAttachment : Attachment
         if (Player.Instance.Parts < BuildCost || Level >= 3)
             return;
 
-        HealAmount += 5;
+        HealAmount++;
 
         base.LevelUp();
     }
