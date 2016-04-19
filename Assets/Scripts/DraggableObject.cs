@@ -30,6 +30,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         GetComponent<CanvasGroup>().alpha = 1;
         GetComponent<CanvasGroup>().blocksRaycasts = false;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(400, 100);
 
         transform.rotation = Quaternion.identity;
     }
